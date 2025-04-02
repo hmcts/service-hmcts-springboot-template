@@ -1,0 +1,61 @@
+name: Linting of OpenAPI documents on Pull Requests
+
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+    branches:
+      - master
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install -g @stoplight/spectral-cli ajv-cli jsonlint
+
+      - name: Lint JSON schema example responses
+        run: |
+          shopt -s nullglob
+          files=(openapi/**/*.example.json)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "✅ No example JSON files to lint."
+          else
+            for file in "${files[@]}"; do
+              echo "Linting $file"
+              jsonlint -q "$file" || exit 1
+            done
+          fi
+
+      - name: Validate JSON schema responses
+        run: |
+          for schema in openapi/**/*.schema.json; do
+            # Replace ".schema.json" with ".example.json" to get the data file name
+            datafile="${schema/.schema.json/.example.json}"
+      
+            if [ -f "$datafile" ]; then
+              echo "Validating $datafile against schema $schema"
+              # strict mode is off because the "example" attribute is useful for openapi specs
+              ajv --spec=draft2020 --strict=false -s "$schema" -d "$datafile" || exit 1
+            else
+              echo "⚠️ Skipping: no example file found for $schema"
+            fi
+          done
+
+      - name: Run Spectral on API specs
+        run: |
+          spectral lint "openapi/**/*.{yml,yaml}" || exit 1
