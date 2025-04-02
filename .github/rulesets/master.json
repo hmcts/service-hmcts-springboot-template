@@ -3,7 +3,7 @@
   "name": "master",
   "target": "branch",
   "source_type": "Repository",
-  "source": "hmcts/api-cp-refdata-courthearing-judges",
+  "source": "hmcts/api-cp-springboot-template",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
