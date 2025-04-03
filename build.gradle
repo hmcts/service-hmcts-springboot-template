@@ -22,6 +22,10 @@ java {
 }
 
 sourceSets {
+
+
+
+
   functionalTest {
     java {
       compileClasspath += main.output
@@ -152,6 +156,12 @@ dependencies {
   implementation group: 'ch.qos.logback', name: 'logback-core', version: logbackVersion
 
   implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.1'
+
+  implementation('uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses') {
+    version {
+      branch = 'master'
+    }
+  }
 
   testImplementation(platform('org.junit:junit-bom:5.12.1'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
