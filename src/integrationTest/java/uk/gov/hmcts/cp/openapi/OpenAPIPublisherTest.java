@@ -38,7 +38,10 @@ class OpenAPIPublisherTest {
             .getResponse()
             .getContentAsByteArray();
 
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/openapi-specs.json"))) {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String path = Paths.get(tempDir, "openapi-specs.json").toString();
+
+        try (OutputStream outputStream = Files.newOutputStream(Paths.get(path))) {
             outputStream.write(specs);
         }
 
