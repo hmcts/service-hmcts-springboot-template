@@ -154,9 +154,16 @@ ext {
 
 ext['snakeyaml.version'] = '2.0'
 
+def inputSpecPath = "$rootDir/openapi/src/main/resources/openapi/courtHouses.yml"
+def inputSpecFile = file(inputSpecPath)
+
+if (!inputSpecFile.exists()) {
+  throw new GradleException("OpenAPI spec file not found: $inputSpecPath")
+}
+
 openApiGenerate {
   generatorName = "spring"
-  inputSpec = "$rootDir/openapi/src/main/resources/openapi/courtHouses.yml"
+  inputSpec = inputSpecFile.absolutePath
   outputDir = "$buildDir/generated"
   apiPackage = "uk.gov.hmcts.cp.openapi.api"
   modelPackage = "uk.gov.hmcts.cp.openapi.model"
