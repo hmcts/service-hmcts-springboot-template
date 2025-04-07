@@ -154,8 +154,8 @@ ext {
 
 ext['snakeyaml.version'] = '2.0'
 
-def inputSpecPath = "openapi/src/main/resources/openapi/courtHouses.yml"
-def inputSpecFile = file(inputSpecPath)
+def openApiModule = project(":openapi")
+def inputSpecFile = new File(openApiModule.projectDir, "src/main/resources/openapi/courtHouses.yml")
 
 if (!inputSpecFile.exists()) {
   throw new GradleException("OpenAPI spec file not found: $inputSpecPath")
