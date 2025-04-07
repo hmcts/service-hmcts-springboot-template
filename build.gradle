@@ -163,8 +163,13 @@ println  "project.projectDir:   ${project.projectDir}"
 println  "openApiModule.projectDir:   ${openApiModule.projectDir}"
 println  "openApiModule.projectDir.getAbsolutePath():   ${openApiModule.projectDir.getAbsolutePath()}"
 
-println "===>>> before"
+println "===>>> before openapi"
 fileTree("${openApiModule.projectDir.getAbsolutePath()}").filter {
+  println it.getAbsolutePath()
+}
+println "===>>> after"
+println "===>>> before root"
+fileTree("${project.rootProject}").filter {
   println it.getAbsolutePath()
 }
 println "===>>> after"
