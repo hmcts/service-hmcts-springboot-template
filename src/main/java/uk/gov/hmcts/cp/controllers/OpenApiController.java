@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.cp.openapi.api.DefaultApi;
 import uk.gov.hmcts.cp.openapi.model.CourtHousesschema;
-import uk.gov.hmcts.cp.openapi.model.CourtHousesschemaCourtHouse;
 import uk.gov.hmcts.cp.services.OpenApiService;
 
 @RestController
