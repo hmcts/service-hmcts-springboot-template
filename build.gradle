@@ -1,10 +1,15 @@
 plugins {
   id 'application'
+  id 'java'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '3.4.4'
   id 'com.github.ben-manes.versions' version '0.52.0'
   id 'org.sonarqube' version '6.1.0.5360'
+
+  id 'org.openapi.generator' version '7.12.0'
+  id 'com.diffplug.spotless' version '7.0.2'
+
   /*
     Applies analysis tools including checkstyle and OWASP Dependency checker.
     See https://github.com/hmcts/gradle-java-plugin
@@ -16,6 +21,9 @@ group = 'uk.gov.hmcts.cp'
 version = '0.0.1'
 
 java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+
   toolchain {
     languageVersion = JavaLanguageVersion.of(21)
   }
@@ -23,8 +31,11 @@ java {
 
 sourceSets {
 
-
-
+  main {
+    java {
+      srcDir "$buildDir/generated/src/main/java"
+    }
+  }
 
   functionalTest {
     java {
@@ -129,7 +140,9 @@ dependencyCheck {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url 'https://jitpack.io' }
+  maven {
+    url = 'https://jitpack.io'
+  }
 }
 
 ext {
@@ -140,6 +153,56 @@ ext {
 }
 
 ext['snakeyaml.version'] = '2.0'
+
+openApiGenerate {
+  generatorName = "spring"
+  inputSpec = "$rootDir/openapi/src/main/resources/openapi/courtHouses.yml"
+  outputDir = "$buildDir/generated"
+  apiPackage = "uk.gov.hmcts.cp.openapi.api"
+  modelPackage = "uk.gov.hmcts.cp.openapi.model"
+  generateModelTests = true
+  generateApiTests = true
+  cleanupOutput = true
+  configOptions = [
+    dateLibrary            : "java8",
+    java21                 : "true",
+    interfaceOnly          : "true",
+    hideGenerationTimestamp: "true",
+    jakarta                : "true",
+    useBeanValidation      : "true",
+    useTags                : "true",
+    useSpringBoot3         : "true",
+    implicitHeaders        : "false",
+    performBeanValidation  : "true",
+    openApiNullable        : "false"
+  ]
+}
+
+tasks.named('compileJava') {
+  dependsOn tasks.named('spotlessApply')
+}
+
+spotless {
+  java {
+    target 'build/generated/src/main/**/*.java'
+    removeUnusedImports()
+    eclipse().configFile('config/formatter/eclipse-formatter.xml')
+  }
+}
+
+tasks.named('spotlessJava') {
+  dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.named('spotlessApply') {
+  dependsOn tasks.named('openApiGenerate')
+}
+
+tasks.withType(Checkstyle).configureEach {
+  source = source.filter { file ->
+    !file.path.contains("${buildDir}/generated/src/main/java")
+  }
+}
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -157,11 +220,22 @@ dependencies {
 
   implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.1'
 
-  implementation('uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses') {
-    version {
-      branch = 'master'
-    }
-  }
+//  implementation('uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses') {
+//    version {
+//      branch = 'master'
+//    }
+//  }
+
+//  implementation(':openapi') {
+//    version {
+//      branch = 'master'
+//    }
+//  }
+
+  implementation 'org.openapitools:openapi-generator-core:7.12.0'
+  implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+  implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+  implementation 'org.hibernate.validator:hibernate-validator:8.0.2.Final'
 
   testImplementation(platform('org.junit:junit-bom:5.12.1'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -174,7 +248,9 @@ dependencies {
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 }
 
-mainClassName = 'uk.gov.hmcts.cp.Application'
+application {
+  mainClass = 'uk.gov.hmcts.cp.Application'
+}
 
 bootJar {
   archiveFileName = "api-cp-springboot-template.jar"
@@ -187,4 +263,3 @@ bootJar {
 wrapper {
   distributionType = Wrapper.DistributionType.ALL
 }
-

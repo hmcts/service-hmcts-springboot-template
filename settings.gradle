@@ -3,3 +3,18 @@ sourceControl {
     producesModule("uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses")
   }
 }
+
+//include 'api-cp-springboot-template', 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+//include 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+
+//include 'openapi'
+
+//include 'api-cp-springboot-template', 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+//include 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+
+//include 'openapi'
+
+//include 'api-cp-springboot-template', 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+//include 'uk.gov.hmcts.cp:api-cp-refdata-courthearing-courthouses'
+
+include 'openapi'
