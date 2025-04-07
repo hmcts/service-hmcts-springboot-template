@@ -205,8 +205,9 @@ tasks.named('spotlessApply') {
 }
 
 tasks.withType(Checkstyle).configureEach {
+  def generatedDir = file("${buildDir}/generated/src/main/java").canonicalPath
   source = source.filter { file ->
-    !file.path.contains("${buildDir}/generated/src/main/java")
+    !file.canonicalPath.startsWith(generatedDir)
   }
 }
 
