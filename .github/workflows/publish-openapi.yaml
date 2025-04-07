@@ -1,3 +1,6 @@
+# This job will automatically generates API from Spring Boot controllers
+# and publishes to https://github.com/hmcts/cnp-api-docs/blob/master/docs/specs/api-cp-springboot-template.json
+# When you run application locally, auto-generated API should be available here http://localhost:4550/v3/api-docs
 name: Publish OpenAPI specs
 on:
   push:
