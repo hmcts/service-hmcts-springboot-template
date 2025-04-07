@@ -172,10 +172,9 @@ openApiGenerate {
   cleanupOutput = true
   configOptions = [
     dateLibrary            : "java8",
-    java21                 : "true",
     interfaceOnly          : "true",
     hideGenerationTimestamp: "true",
-    jakarta                : "true",
+    useJakartaEe           : "true",
     useBeanValidation      : "true",
     useTags                : "true",
     useSpringBoot3         : "true",
