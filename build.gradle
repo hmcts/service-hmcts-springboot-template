@@ -163,8 +163,20 @@ println  "project.projectDir:   ${project.projectDir}"
 println  "openApiModule.projectDir:   ${openApiModule.projectDir}"
 println  "openApiModule.projectDir.getAbsolutePath():   ${openApiModule.projectDir.getAbsolutePath()}"
 
+println "===>>> before"
+fileTree("${openApiModule.projectDir.getAbsolutePath()}").filter {
+  println it.getAbsolutePath()
+}
+println "===>>> after"
+
+//[2025-04-07 12:38:28] [autobuild] project.rootProject:   root project 'api-cp-springboot-template'
+//[2025-04-07 12:38:28] [autobuild] project.rootDir:      /home/runner/work/api-cp-springboot-template/api-cp-springboot-template
+//[2025-04-07 12:38:28] [autobuild] project.projectDir:   /home/runner/work/api-cp-springboot-template/api-cp-springboot-template
+//[2025-04-07 12:38:28] [autobuild] openApiModule.projectDir:   /home/runner/work/api-cp-springboot-template/api-cp-springboot-template/openapi
+//[2025-04-07 12:38:28] [autobuild] openApiModule.projectDir.getAbsolutePath():   /home/runner/work/api-cp-springboot-template/api-cp-springboot-template/openapi
+
 if (!inputSpecFile.exists()) {
-  throw new GradleException("OpenAPI spec file not found: $inputSpecPath")
+  throw new GradleException("OpenAPI spec file not found: $inputSpecFile")
 }
 
 openApiGenerate {
