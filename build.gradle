@@ -138,6 +138,7 @@ dependencyCheck {
 }
 
 repositories {
+  gradlePluginPortal()
   mavenLocal()
   mavenCentral()
   maven {
