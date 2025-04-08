@@ -9,6 +9,8 @@ import uk.gov.hmcts.cp.openapi.api.DefaultApi;
 import uk.gov.hmcts.cp.openapi.model.CourtHousesschema;
 import uk.gov.hmcts.cp.services.OpenApiService;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class OpenApiController implements DefaultApi {

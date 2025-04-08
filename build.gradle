@@ -218,12 +218,13 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-json'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.6'
 
-  implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:3.4.14'
+  implementation 'com.microsoft.azure:applicationinsights-spring-boot-starter:2.6.4'
   implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 
   implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.1'
 
   implementation 'org.openapitools:openapi-generator-core:7.12.0'
+  implementation 'org.hibernate.validator:hibernate-validator:8.0.2.Final'
 
   testImplementation(platform('org.junit:junit-bom:5.12.1'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
