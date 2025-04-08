@@ -1,24 +1,30 @@
-name: Template CI
+name: Java CI
 
 on:
   pull_request:
-    branches:
-      - master
-  push:
     branches:
       - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [check, test]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/setup-java@v4
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
-          cache: 'gradle'
-      - name: Build
-        run: ./gradlew check
+          gradle-version: current
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Run Gradle ${{ matrix.task }}
+        run: ./gradlew ${{ matrix.task }}
