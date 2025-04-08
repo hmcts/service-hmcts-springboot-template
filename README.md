@@ -2,20 +2,16 @@
 
 ## Purpose
 
-The purpose of this template is to speed up the creation of new Spring applications within HMCTS
-and help keep the same standards across multiple teams. If you need to create a new app, you can
-simply use this one as a starting point and build on top of it.
+The purpose of this template is to speed up the creation of new Spring applications within HMCTS.
 
 ## What's inside
 
 The template is a working application with a minimal setup. It contains:
 * application skeleton
 * setup script to prepare project
-* common plugins and libraries
+* Standard plugins and libraries
 * [HMCTS Java plugin](https://github.com/hmcts/gradle-java-plugin)
 * docker setup
-* automatically publishes API documentation to [hmcts/cnp-api-docs](https://github.com/hmcts/cnp-api-docs)
-* code quality tools already set up
 * MIT license and contribution information
 * Helm chart using chart-java.
 
@@ -85,10 +81,6 @@ The template contains the following plugins:
     ./gradlew dependencyUpdates -Drevision=release
   ```
 
-## Setup
-
-Located in `./bin/init.sh`. Simply run and follow the explanation how to execute it.
-
 ## Building and deploying the application
 
 ### Building the application
@@ -110,9 +102,10 @@ Create the image of the application by executing the following command:
   ./gradlew assemble
 ```
 
-Note: Docker Compose V2 is highly recommended for building and running the application.
-In the Compose V2 old `docker-compose` command is replaced with `docker compose`.
+Local installation of docker: [Get Docker](https://docs.docker.com/get-started/get-docker/)
+```
 
+```
 Create docker image:
 
 ```bash
