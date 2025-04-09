@@ -8,4 +8,5 @@ COPY ${jarPath} /opt/app/
 COPY lib/applicationinsights.json /opt/app/
 
 EXPOSE 4550
+RUN chmod 755 /opt/app/api-cp-springboot-template.jar
 CMD [ "java", "-jar", "/opt/app/api-cp-springboot-template.jar" ]
