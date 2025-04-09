@@ -8,4 +8,4 @@ COPY ${jarPath} /opt/app/
 COPY lib/applicationinsights.json /opt/app/
 
 EXPOSE 4550
-CMD [ "/opt/app/api-cp-springboot-template.jar" ]
+CMD [ "java", "-jar", "/opt/app/api-cp-springboot-template.jar" ]
