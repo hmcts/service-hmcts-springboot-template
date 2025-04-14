@@ -26,7 +26,6 @@ pool:
   demands:
     - identifier -equals jo1-temp
 
-
 stages:
     - template: pipelines/vp-build.yaml@cppAzureDevOpsTemplates
       parameters:
