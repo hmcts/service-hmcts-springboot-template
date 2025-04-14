@@ -19,12 +19,12 @@ resources:
       type: github
       name: hmcts/cpp-azure-devops-templates
       endpoint: 'hmcts'
-      ref: 'vp-template'
+      ref: 'main'
 
 pool:
   name: "MDV-ADO-AGENT-AKS-01"
   demands:
-    - identifier -equals jo1-temp
+    - identifier -equals ubuntu-j21
 
 stages:
     - template: pipelines/vp-build.yaml@cppAzureDevOpsTemplates
