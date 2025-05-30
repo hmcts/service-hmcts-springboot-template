@@ -1,18 +1,15 @@
 package uk.gov.hmcts.cp.services;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.cp.openapi.model.CourtHousesschema;
-import uk.gov.hmcts.cp.openapi.model.CourtHousesschemaCourtHouse;
+import uk.gov.hmcts.cp.openapi.model.CourtHouse;
 
 @Service
 public class OpenApiService {
 
-    public CourtHousesschema getCourtHouse(String courtId) {
-        CourtHousesschema courtHousesschema = new CourtHousesschema();
-        CourtHousesschemaCourtHouse courtHouse = new CourtHousesschemaCourtHouse();
+    public CourtHouse getCourtHouse(String courtId) {
+        CourtHouse courtHouse = new CourtHouse();
         courtHouse.courtHouseName("House name 221B");
         courtHouse.courtHouseCode(courtId);
-        courtHousesschema.courtHouse(courtHouse);
-        return courtHousesschema;
+        return courtHouse;
     }
 }
