@@ -1,9 +1,9 @@
 {
-  "id": 4327583,
-  "name": "master",
+  "id": 5667649,
+  "name": "main",
   "target": "branch",
   "source_type": "Repository",
-  "source": "hmcts/api-cp-springboot-template",
+  "source": "hmcts/service-cp-crime-scheduleandlist-courtschedule",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -43,7 +43,23 @@
         "do_not_enforce_on_create": false,
         "required_status_checks": [
           {
-            "context": "lint",
+            "context": "Build",
+            "integration_id": 15368
+          },
+          {
+            "context": "Artefact-Version",
+            "integration_id": 15368
+          },
+          {
+            "context": "Analyze (java)",
+            "integration_id": 15368
+          },
+          {
+            "context": "CodeQL",
+            "integration_id": 57789
+          },
+          {
+            "context": "pmd-analysis",
             "integration_id": 15368
           }
         ]
