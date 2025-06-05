@@ -1,4 +1,11 @@
-# API Service SpringBoot Template
+# HMCTS API Marketplace Service SpringBoot Template
+
+This repository provides a template for building Spring Boot applications within the HMCTS API Marketplace ecosystem. 
+It includes essential configurations, dependencies, and best practices to help you get started quickly.
+
+NOTE: This project is a template and does not contain any business logic. It is intended to be used as a reference for new HMCTS API services.
+
+[![CI Build and Publish Increments Draft](
 
 ## 🚀 Installation
 
@@ -27,12 +34,9 @@ gradle -v
 
 run `gradle wrapper`
 
+### 🔑 Environment Setup for Local Builds
 
-```bash
-
-## 🔑 Environment Setup for Local Builds
-
-### Recommended Approach for macOS Users (using `direnv`)
+Recommended Approach for macOS Users (using `direnv`)
 
 If you're on macOS, you can use [direnv](https://direnv.net/) to automatically load these environment variables per project:
 
@@ -54,6 +58,22 @@ If you're on macOS, you can use [direnv](https://direnv.net/) to automatically l
    ```
 
 This will ensure your environment is correctly set up every time you enter the project directory.
+
+## Static code analysis
+
+Install PMD
+
+```bash
+brew install pmd
+```
+```bash
+pmd check \
+    --dir src/main/java \
+    --rulesets \
+    .github/pmd-ruleset.xml \
+    --format html \
+    -r build/reports/pmd/pmd-report.html
+```
 
 ## License
 
