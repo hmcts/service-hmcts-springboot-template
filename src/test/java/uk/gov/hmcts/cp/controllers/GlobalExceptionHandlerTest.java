@@ -1,5 +1,3 @@
-package uk.gov.hmcts.cp.controllers;
-
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import org.junit.jupiter.api.Test;
