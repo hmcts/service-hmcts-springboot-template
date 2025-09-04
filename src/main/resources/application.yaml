@@ -23,7 +23,7 @@ spring:
   config:
     import: "optional:configtree:/mnt/secrets/rpe/"
   application:
-    name: service-cp-refdata-courthearing-judges
+    name: service-UPDATE-TO-BE-NAME-OF-SERVICE
 #  azure:
 #    cosmos:
 #      endpoint: ${COSMOSDB_ENDPOINT}
