@@ -19,6 +19,10 @@ That’s absolutely fine — but if you do, make sure your approach meets the fo
 * Compliance & Policy Alignment – Services must align with HMCTS/MoJ policies (e.g. Coding in the Open, mandatory security practices).
 * Ownership & Support – Domain teams must clearly own the service, maintain a support model, and define escalation paths.
 
+## Documentation
+
+Further documentation can be found in the [docs](docs) directory.
+
 ## Installation
 
 To get started with this project, you'll need Java and Gradle installed.
