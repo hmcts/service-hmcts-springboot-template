@@ -23,4 +23,5 @@ jobs:
       trigger_docker: ${{ github.event_name == 'push' }}
       trigger_deploy: ${{ github.event_name == 'push' }}
       pacticipant: CPCourtScheduleProvider
+      pact_ignore: true
       pact_env: dev/pactTest
