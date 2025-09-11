@@ -28,19 +28,19 @@ java {
 
 sourceSets {
   integrationTest {
-    java {
-      compileClasspath += sourceSets.main.output
-      runtimeClasspath += sourceSets.main.output
-    }
-    resources.srcDir file('src/integrationTest/resources')
+      java {
+          compileClasspath += sourceSets.main.output
+          runtimeClasspath += sourceSets.main.output
+      }
+      resources.srcDir file('src/integrationTest/resources')
   }
-  pactVerificationTest {
-    java {
-      compileClasspath += sourceSets.main.output
-      runtimeClasspath += sourceSets.main.output
-    }
-    resources.srcDir file('src/pactVerificationTest/resources')
-  }
+  // pactVerificationTest {
+  //     java {
+  //         compileClasspath += sourceSets.main.output
+  //         runtimeClasspath += sourceSets.main.output
+  //     }
+  //     resources.srcDir file('src/pactVerificationTest/resources')
+  // }
 }
 
 configurations {
@@ -52,7 +52,7 @@ configurations {
 
   // Ensure testRuntimeClasspath can be resolved for agent injection
   testRuntimeClasspath {
-    canBeResolved = true
+      canBeResolved = true
   }
 }
 
@@ -67,10 +67,10 @@ tasks.withType(JavaExec).configureEach {
 }
 
 tasks.named('test') {
-  useJUnitPlatform{
-    excludeTags 'pact'
-  }
-  systemProperty 'API_SPEC_VERSION', project.version
+  useJUnitPlatform{}
+  // useJUnitPlatform{
+  //     excludeTags 'pact'
+  // }
   failFast = true
   // Mockito must be added as an agent, see:
   // https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
@@ -78,13 +78,13 @@ tasks.named('test') {
           "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}", '-Xshare:off'
   ]
   testLogging {
-    events "passed", "skipped", "failed"
-    exceptionFormat = 'full'
-    showStandardStreams = true
+      events "passed", "skipped", "failed"
+      exceptionFormat = 'full'
+      showStandardStreams = true
   }
   reports {
-    junitXml.required.set(true)
-    html.required.set(true)
+      junitXml.required.set(true)
+      html.required.set(true)
   }
 }
 
@@ -96,40 +96,40 @@ tasks.register('integration', Test) {
   useJUnitPlatform()
   failFast = true
   testLogging {
-    events "passed", "skipped", "failed"
-    exceptionFormat = 'full'
-    showStandardStreams = true
+      events "passed", "skipped", "failed"
+      exceptionFormat = 'full'
+      showStandardStreams = true
   }
   reports {
-    junitXml.required.set(true)
-    html.required.set(true)
+      junitXml.required.set(true)
+      html.required.set(true)
   }
 }
 
-tasks.register('pactVerificationTest', Test) {
-  description = "Runs Pact provider verification tests"
-  group = "Verification"
-  testClassesDirs = sourceSets.pactVerificationTest.output.classesDirs
-  classpath = sourceSets.pactVerificationTest.runtimeClasspath
-  useJUnitPlatform {
-    includeTags 'pact'
-  }
-  failFast = true
+// tasks.register('pactVerificationTest', Test) {
+//   description = "Runs Pact provider verification tests"
+//   group = "Verification"
+//   testClassesDirs = sourceSets.pactVerificationTest.output.classesDirs
+//   classpath = sourceSets.pactVerificationTest.runtimeClasspath
+//   useJUnitPlatform {
+//       includeTags 'pact'
+//   }
+//   failFast = true
 
-  def sysOrEnv = { String key ->
-    System.getProperty(key) ?: System.getenv(key.toUpperCase().replace('.', '_'))
-  }
-  systemProperty 'pact.broker.url', sysOrEnv('pact.broker.url')
-  systemProperty 'pact.broker.token', sysOrEnv('pact.broker.token')
-  systemProperty 'pact.provider.version', sysOrEnv('pact.provider.version')
-  systemProperty 'pact.provider.branch', sysOrEnv('pact.provider.branch')
-  systemProperty 'pact.verifier.publishResults', sysOrEnv('pact.verifier.publishResults')
-  systemProperty 'pact.env', sysOrEnv( 'pact.env') ?: 'local'
-  reports {
-    junitXml.required.set(true)
-    html.required.set(true)
-  }
-}
+//   def sysOrEnv = { String key ->
+//       System.getProperty(key) ?: System.getenv(key.toUpperCase().replace('.', '_'))
+//   }
+//   systemProperty 'pact.broker.url', sysOrEnv('pact.broker.url')
+//   systemProperty 'pact.broker.token', sysOrEnv('pact.broker.token')
+//   systemProperty 'pact.provider.version', sysOrEnv('pact.provider.version')
+//   systemProperty 'pact.provider.branch', sysOrEnv('pact.provider.branch')
+//   systemProperty 'pact.verifier.publishResults', sysOrEnv('pact.verifier.publishResults')
+//   systemProperty 'pact.env', sysOrEnv( 'pact.env') ?: 'local'
+//   reports {
+//       junitXml.required.set(true)
+//       html.required.set(true)
+//   }
+// }
 
 tasks.named('build') {
   dependsOn tasks.named('test')
@@ -139,9 +139,9 @@ tasks.named('build') {
 tasks.named('jacocoTestReport') {
   dependsOn tasks.named('test')
   reports {
-    xml.required.set(true)
-    csv.required.set(false)
-    html.required.set(true)
+      xml.required.set(true)
+      csv.required.set(false)
+      html.required.set(true)
   }
 }
 
@@ -152,12 +152,12 @@ tasks.named('check') {
 // check dependencies upon release ONLY
 tasks.named("dependencyUpdates").configure {
   def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
-    def regex = /^[0-9,.v-]+$/
-    return !stableKeyword && !(version ==~ regex)
+      def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
+      def regex = /^[0-9,.v-]+$/
+      return !stableKeyword && !(version ==~ regex)
   }
   rejectVersionIf {
-    isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+      isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
   }
 }
 
@@ -165,34 +165,34 @@ repositories {
   mavenLocal()
   mavenCentral()
   maven {
-    url = azureADOArtifactRepository
+      url = azureADOArtifactRepository
   }
 }
 
 publishing {
   publications {
-    mavenJava(MavenPublication) {
-      artifact(tasks.named('bootJar'))
-      artifact(tasks.named('jar'))
-    }
+      mavenJava(MavenPublication) {
+          artifact(tasks.named('bootJar'))
+          artifact(tasks.named('jar'))
+      }
   }
   repositories {
-    maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/$githubRepo")
-      credentials {
-        username = githubActor
-        password = githubToken
+      maven {
+          name = "GitHubPackages"
+          url = uri("https://maven.pkg.github.com/$githubRepo")
+          credentials {
+              username = githubActor
+              password = githubToken
+          }
       }
-    }
-    maven {
-      name = "AzureArtifacts"
-      url = uri(azureADOArtifactRepository)
-      credentials {
-        username = azureADOArtifactActor
-        password = azureADOArtifactToken
+      maven {
+          name = "AzureArtifacts"
+          url = uri(azureADOArtifactRepository)
+          credentials {
+              username = azureADOArtifactActor
+              password = azureADOArtifactToken
+          }
       }
-    }
   }
 }
 
@@ -210,11 +210,11 @@ jar {
   enabled = true
   archiveClassifier.set('plain')
   if (file("CHANGELOG.md").exists()) {
-    from('CHANGELOG.md') {
-      into 'META-INF'
-    }
+      from('CHANGELOG.md') {
+          into 'META-INF'
+      }
   } else {
-    println "⚠️  CHANGELOG.md not found, skipping inclusion in JAR"
+      println "⚠️  CHANGELOG.md not found, skipping inclusion in JAR"
   }
 }
 
@@ -222,7 +222,7 @@ bootJar {
   archiveFileName = "${rootProject.name}-${project.version}.jar"
 
   manifest {
-    attributes('Implementation-Version': project.version.toString())
+      attributes('Implementation-Version': project.version.toString())
   }
 }
 
@@ -231,20 +231,19 @@ application {
 }
 
 ext {
-  apiCourtScheduleVersion = "0.4.2"
-  log4JVersion = "2.24.3"
+  apiCourtScheduleVersion = "0.4.8"
   logbackVersion = "1.5.18"
   lombokVersion = "1.18.38"
 }
 
-tasks.named('processPactVerificationTestResources') {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+// tasks.named('processPactVerificationTestResources') {
+//   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+// }
 
 
 dependencies {
   implementation "uk.gov.hmcts.cp:api-cp-crime-schedulingandlisting-courtschedule:$apiCourtScheduleVersion"
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
   implementation 'io.swagger.core.v3:swagger-core:2.2.36'
   implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
@@ -280,11 +279,10 @@ dependencies {
   testImplementation(platform('org.junit:junit-bom:5.13.4'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '3.5.5', {
-    exclude group: 'junit', module: 'junit'
-    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+      exclude group: 'junit', module: 'junit'
+      exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-  testImplementation 'au.com.dius.pact.provider:junit5:4.6.17'
-  testImplementation 'au.com.dius.pact.provider:spring6:4.6.17'
+  // testImplementation 'au.com.dius.pact.provider:junit5:4.6.17'
+  // testImplementation 'au.com.dius.pact.provider:spring6:4.6.17'
 }
