@@ -8,6 +8,7 @@ plugins {
   id "com.github.ben-manes.versions" version "0.52.0"
   id "org.cyclonedx.bom" version "2.3.1"
   id "au.com.dius.pact" version "4.6.17"
+  id 'pmd'
 }
 
 group = 'uk.gov.hmcts.cp'
@@ -141,6 +142,20 @@ tasks.named('jacocoTestReport') {
   reports {
     xml.required.set(true)
     csv.required.set(false)
+    html.required.set(true)
+  }
+}
+
+pmd {
+  toolVersion = "7.16.0"
+  ruleSets = []
+  ruleSetFiles = files(".github/pmd-ruleset.xml")
+  ignoreFailures = false
+}
+
+tasks.withType(Pmd) {
+  reports {
+    xml.required.set(true)
     html.required.set(true)
   }
 }
