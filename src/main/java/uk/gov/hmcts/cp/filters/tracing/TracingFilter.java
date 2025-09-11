@@ -16,7 +16,7 @@ import java.io.IOException;
 public class TracingFilter extends OncePerRequestFilter {
 
     public static final String TRACE_ID = "traceId";
-    public static final String SPANE_ID = "spanId";
+    public static final String SPAN_ID = "spanId";
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
@@ -24,9 +24,9 @@ public class TracingFilter extends OncePerRequestFilter {
             MDC.put(TRACE_ID, request.getHeader(TRACE_ID));
             response.setHeader(TRACE_ID, request.getHeader(TRACE_ID));
         }
-        if (request.getHeader(SPANE_ID) != null) {
-            MDC.put(SPANE_ID, request.getHeader(SPANE_ID));
-            response.setHeader(SPANE_ID, request.getHeader(SPANE_ID));
+        if (request.getHeader(SPAN_ID) != null) {
+            MDC.put(SPAN_ID, request.getHeader(SPAN_ID));
+            response.setHeader(SPAN_ID, request.getHeader(SPAN_ID));
         }
         filterChain.doFilter(request, response);
     }
