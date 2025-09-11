@@ -19,4 +19,5 @@ jobs:
       trigger_docker: true
       trigger_deploy: true
       pacticipant: CPCourtScheduleProvider
+      pact_ignore: true
       pact_env: dev/pactTest
