@@ -1,13 +1,25 @@
-# HMCTS API Marketplace Service SpringBoot Template
+# HMCTS Service Spring Boot Template
 
-This repository provides a template for building Spring Boot applications within the HMCTS API Marketplace ecosystem. 
-It includes essential configurations, dependencies, and best practices to help you get started quickly.
+This repository provides a template for building Spring Boot applications. While the initial use case was for the HMCTS API Marketplace, the template is designed to be reusable across jurisdictions and is intended as a base paved path for wider adoption.
 
-NOTE: This project is a template and does not contain any business logic. It is intended to be used as a reference for new HMCTS API services.
+It includes essential configurations, dependencies, and recommended practices to help teams get started quickly.
 
-[![CI Build and Publish Increments Draft](
+**Note:** This template is not a framework, nor is it intended to evolve into one. It simply leverages the Spring ecosystem and proven libraries from the wider engineering community.
 
-## 🚀 Installation
+As HMCTS services are hosted on Azure, the included dependencies reflect this. Our aim is to stay as close to the cloud as possible in order to maximise alignment with the Shared Responsibility Model and achieve optimal security and operability.
+
+## Want to Build Your Own Path?
+
+That’s absolutely fine — but if you do, make sure your approach meets the following baseline requirements:
+
+* Security – All services must meet HMCTS security standards, including vulnerability scanning and least privilege access.
+* Observability – Logs, metrics, and traces must be integrated into HMCTS observability stack (e.g. Azure Monitoring).
+* Audit – Systems must produce audit trails that meet legal and operational requirements.
+* CI/CD Integration – Pipelines must include automated testing, deployments to multiple environments, and use approved tooling (e.g. GitHub Actions or Azure DevOps).
+* Compliance & Policy Alignment – Services must align with HMCTS/MoJ policies (e.g. Coding in the Open, mandatory security practices).
+* Ownership & Support – Domain teams must clearly own the service, maintain a support model, and define escalation paths.
+
+## Installation
 
 To get started with this project, you'll need Java and Gradle installed.
 
@@ -34,7 +46,7 @@ gradle -v
 
 run `gradle wrapper`
 
-### 🔑 Environment Setup for Local Builds
+### Environment Setup for Local Builds
 
 Recommended Approach for macOS Users (using `direnv`)
 
