@@ -20,7 +20,7 @@ sequenceDiagram
     GH->>GH: Security Scans (CodeQL, Trufflehog, Gitleaks)
     GH->>GH: Linting & Static Code Analysis
     GH->>GH: Unit & Integration Tests
-    GH->>GH: Build (Gradle)
+    GH->>GH: Build
 
     note right of GH: All assurance workflow steps are complete
     GH->>Art: Publish artefact [DRAFT] (versioned via git tag & commit SHA)
@@ -53,7 +53,7 @@ sequenceDiagram
     GH->>GH: Security Scans (CodeQL, Trufflehog, Gitleaks)
     GH->>GH: Linting & Static Code Analysis
     GH->>GH: Unit & Integration Tests
-    GH->>GH: Build (Gradle)
+    GH->>GH: Build
 
     note right of GH: All assurance workflow steps are complete
     GH->>Art: Publish artefact [DRAFT] (versioned via git tag & commit SHA)
