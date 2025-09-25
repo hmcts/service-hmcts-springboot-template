@@ -22,7 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
-    public final static String JWT_TOKEN_HEADER = "jwt";
+    public static final String JWT_TOKEN_HEADER = "jwt";
 
     private final JWTService jwtService;
     private final PathMatcher pathMatcher;

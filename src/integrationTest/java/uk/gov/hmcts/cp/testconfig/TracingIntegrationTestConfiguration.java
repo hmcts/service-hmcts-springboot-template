@@ -13,14 +13,14 @@ public class TracingIntegrationTestConfiguration {
     
     @Bean
     @Primary
-    public Tracer testTracer() {
+    public Tracer tracer() {
         return new SimpleTracer();
     }
     
     @Bean
     @Primary
-    public ObservationRegistry testObservationRegistry(Tracer tracer) {
-        ObservationRegistry registry = ObservationRegistry.create();
+    public ObservationRegistry observationRegistry(final Tracer tracer) {
+        final ObservationRegistry registry = ObservationRegistry.create();
         registry.observationConfig().observationHandler(
             new DefaultTracingObservationHandler(tracer)
         );

@@ -23,18 +23,18 @@ class CourtScheduleRepositoryTest {
     }
 
     @Test
-    void getCourtScheduleByCaseUrn_shouldReturnCourtScheduleResponse() {
-        UUID caseUrn = UUID.randomUUID();
-        CourtScheduleResponse response = courtScheduleRepository.getCourtScheduleByCaseUrn(caseUrn.toString());
+    void get_court_schedule_by_case_urn_should_return_court_schedule_response() {
+        final UUID caseUrn = UUID.randomUUID();
+        final CourtScheduleResponse response = courtScheduleRepository.getCourtScheduleByCaseUrn(caseUrn.toString());
 
         assertNotNull(response.getCourtSchedule());
         assertEquals(1, response.getCourtSchedule().size());
 
-        CourtSchedule schedule = response.getCourtSchedule().get(0);
+        final CourtSchedule schedule = response.getCourtSchedule().getFirst();
         assertNotNull(schedule.getHearings());
         assertEquals(1, schedule.getHearings().size());
 
-        Hearing hearing = schedule.getHearings().get(0);
+        final Hearing hearing = schedule.getHearings().getFirst();
         assertNotNull(hearing.getHearingId());
         assertEquals("Requires interpreter", hearing.getListNote());
         assertEquals("Sentencing for theft case", hearing.getHearingDescription());
@@ -42,8 +42,8 @@ class CourtScheduleRepositoryTest {
         assertNotNull(hearing.getCourtSittings());
         assertEquals(1, hearing.getCourtSittings().size());
 
-       CourtSitting sitting =
-                hearing.getCourtSittings().get(0);
+       final CourtSitting sitting =
+                hearing.getCourtSittings().getFirst();
         assertEquals("Central Criminal Court", sitting.getCourtHouse());
         assertNotNull(sitting.getSittingStart());
         assertTrue(sitting.getSittingEnd().isAfter(sitting.getSittingStart()));

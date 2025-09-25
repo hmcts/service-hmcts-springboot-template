@@ -29,7 +29,7 @@ import uk.gov.hmcts.cp.repositories.CourtScheduleRepository;
         authentication = @PactBrokerAuth(token = "${pact.broker.token}")
 )
 @Tag("pact")
-public class CourtScheduleProviderPactTest {
+class CourtScheduleProviderPactTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(CourtScheduleProviderPactTest.class);
 
@@ -40,7 +40,7 @@ public class CourtScheduleProviderPactTest {
     private int port;
 
     @BeforeEach
-    void setupTarget(PactVerificationContext context) {
+    void setupTarget(final PactVerificationContext context) {
         LOG.atDebug().log("Running test on port: " + port);
         context.setTarget(new HttpTestTarget("localhost", port));
         LOG.atDebug().log("pact.verifier.publishResults: " + System.getProperty("pact.verifier.publishResults"));
@@ -49,12 +49,12 @@ public class CourtScheduleProviderPactTest {
     @State("court schedule for case 456789 exists")
     public void setupCourtSchedule() throws Exception{
         courtScheduleRepository.clearAll();
-        CourtScheduleResponse courtScheduleResponse = JsonFileToObject.readJsonFromResources("courtSchedule.json", CourtScheduleResponse.class);
+        final CourtScheduleResponse courtScheduleResponse = JsonFileToObject.readJsonFromResources("courtSchedule.json", CourtScheduleResponse.class);
         courtScheduleRepository.saveCourtSchedule("456789", courtScheduleResponse);
     }
 
     @TestTemplate
-    void pactVerificationTestTemplate(PactVerificationContext context) {
+    void pactVerificationTestTemplate(final PactVerificationContext context) {
         context.verifyInteraction();
     }
 }

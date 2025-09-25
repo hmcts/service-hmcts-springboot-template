@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootTest
 @Import(IntegrationTestConfiguration.class)
-public abstract class BaseIntegrationTest {
+public class BaseIntegrationTestSetup {
     // Base class for integration tests that need to exclude tracing dependencies
 }

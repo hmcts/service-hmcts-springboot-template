@@ -4,6 +4,7 @@ import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import uk.gov.hmcts.cp.openapi.model.ErrorResponse;
@@ -17,25 +18,25 @@ class GlobalExceptionHandlerTest {
     @Test
     void handleResponseStatusExceptionShouldReturnErrorResponseWithCorrectFields() {
         // Arrange
-        Tracer tracer = mock(Tracer.class);
-        Span span = mock(Span.class);
-        TraceContext context = mock(TraceContext.class);
+        final Tracer tracer = mock(Tracer.class);
+        final Span span = mock(Span.class);
+        final TraceContext context = mock(TraceContext.class);
 
         when(tracer.currentSpan()).thenReturn(span);
         when(span.context()).thenReturn(context);
         when(context.traceId()).thenReturn("test-trace-id");
 
-        GlobalExceptionHandler handler = new GlobalExceptionHandler(tracer);
+        final GlobalExceptionHandler handler = new GlobalExceptionHandler(tracer);
 
-        String reason = "Test error";
-        ResponseStatusException ex = new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
+        final String reason = "Test error";
+        final ResponseStatusException exception = new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
 
         // Act
-        var response = handler.handleResponseStatusException(ex);
+        final ResponseEntity<ErrorResponse> response = handler.handleResponseStatusException(exception);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        ErrorResponse error = response.getBody();
+        final ErrorResponse error = response.getBody();
         assertNotNull(error);
         assertEquals("404", error.getError());
         assertEquals(reason, error.getMessage());

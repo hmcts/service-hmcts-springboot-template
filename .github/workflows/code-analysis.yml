@@ -23,7 +23,7 @@ jobs:
         id: pmd
         with:
           rulesets: '.github/pmd-ruleset.xml'
-          sourcePath: 'src/main/java'
+          sourcePath: 'src/main/java,src/test/java,src/integrationTest/java'
 
       - name: Fail build if there are violations
         if: steps.pmd.outputs.violations != 0

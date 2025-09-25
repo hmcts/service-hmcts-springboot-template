@@ -46,7 +46,7 @@ class JWTFilterTest {
 
     @Test
     void shouldPassIfNoJwtInHeaderAndFilterIsDisabled() {
-        JWTFilter jwtFilterDisabled = new JWTFilter(jwtService, pathMatcher, jwtProvider, false);
+        final JWTFilter jwtFilterDisabled = new JWTFilter(jwtService, pathMatcher, jwtProvider, false);
         assertThat(jwtFilterDisabled.shouldNotFilter(request)).isTrue();
     }
 

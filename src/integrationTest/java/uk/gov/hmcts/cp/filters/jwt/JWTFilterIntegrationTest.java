@@ -1,12 +1,5 @@
 package uk.gov.hmcts.cp.filters.jwt;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.gov.hmcts.cp.filters.jwt.JWTFilter.JWT_TOKEN_HEADER;
-
-import uk.gov.hmcts.cp.BaseIntegrationTest;
-
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,20 +7,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.cp.BaseIntegrationTestSetup;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.cp.filters.jwt.JWTFilter.JWT_TOKEN_HEADER;
 
 @SpringBootTest(properties = {"jwt.filter.enabled=true"})
 @AutoConfigureMockMvc
-class JWTFilterIntegrationTest extends BaseIntegrationTest {
+class JWTFilterIntegrationTest extends BaseIntegrationTestSetup {
 
     @Resource
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Resource
     private JWTService jwtService;
 
     @Test
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void shouldPassWhenTokenIsValid() throws Exception {
-        String jwtToken = jwtService.createToken();
+        final String jwtToken = jwtService.createToken();
         mockMvc
                 .perform(
                         MockMvcRequestBuilders.get("/")
