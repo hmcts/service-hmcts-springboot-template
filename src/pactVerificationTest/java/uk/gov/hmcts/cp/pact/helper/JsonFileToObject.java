@@ -11,17 +11,20 @@ import java.util.Objects;
 public class JsonFileToObject {
 
     private static final Logger LOG = LoggerFactory.getLogger(JsonFileToObject.class);
-    private static final ObjectMapper mapper = new ObjectMapper()
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule());
 
-    public static <T> T readJsonFromResources(String fileName, Class<T> clazz) throws Exception {
-        File file;
+    public static <T> T readJsonFromResources(final String fileName, final Class<T> clazz) throws Exception {
+        final File file;
         try{
-            file = new File(Objects.requireNonNull(JsonFileToObject.class.getClassLoader().getResource(fileName)).toURI());
-        } catch (Exception e) {
-            LOG.atError().log("Error loading file: {}", fileName, e);
-            throw e;
+            //file = new File(Objects.requireNonNull(JsonFileToObject.class.getClassLoader().getResource(fileName)).toURI());
+            file = new File(Objects.requireNonNull(
+                    Thread.currentThread().getContextClassLoader().getResource(fileName)
+            ).toURI());
+        } catch (final Exception exception) {
+            LOG.atError().log("Error loading file: {}", fileName, exception);
+            throw exception;
         }
-        return mapper.readValue(file, clazz);
+        return OBJECT_MAPPER.readValue(file, clazz);
     }
 }

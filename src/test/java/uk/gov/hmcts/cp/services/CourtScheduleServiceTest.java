@@ -17,10 +17,10 @@ class CourtScheduleServiceTest {
     @Test
     void shouldReturnStubbedCourtScheduleResponse_whenValidCaseUrnProvided() {
         // Arrange
-        String validCaseUrn = "123-ABC-456";
+        final String validCaseUrn = "123-ABC-456";
 
         // Act
-        CourtScheduleResponse response = courtScheduleService.getCourtScheduleByCaseUrn(validCaseUrn);
+        final CourtScheduleResponse response = courtScheduleService.getCourtScheduleByCaseUrn(validCaseUrn);
 
         // Assert
         assertThat(response).isNotNull();
@@ -34,7 +34,7 @@ class CourtScheduleServiceTest {
     @Test
     void shouldThrowBadRequestException_whenCaseUrnIsNull() {
         // Arrange
-        String nullCaseUrn = null;
+        final String nullCaseUrn = null;
 
         // Act & Assert
         assertThatThrownBy(() -> courtScheduleService.getCourtScheduleByCaseUrn(nullCaseUrn))
@@ -46,7 +46,7 @@ class CourtScheduleServiceTest {
     @Test
     void shouldThrowBadRequestException_whenCaseUrnIsEmpty() {
         // Arrange
-        String emptyCaseUrn = "";
+        final String emptyCaseUrn = "";
 
         // Act & Assert
         assertThatThrownBy(() -> courtScheduleService.getCourtScheduleByCaseUrn(emptyCaseUrn))
