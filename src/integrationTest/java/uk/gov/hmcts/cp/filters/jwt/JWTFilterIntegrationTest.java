@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.cp.filters.jwt.JWTFilter.JWT_TOKEN_HEADER;
 
+import uk.gov.hmcts.cp.BaseIntegrationTest;
+
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @SpringBootTest(properties = {"jwt.filter.enabled=true"})
 @AutoConfigureMockMvc
-class JWTFilterIntegrationTest {
+class JWTFilterIntegrationTest extends BaseIntegrationTest {
 
     @Resource
     MockMvc mockMvc;
