@@ -1,23 +1,23 @@
 package uk.gov.hmcts.cp.logging;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.slf4j.MDC;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import uk.gov.hmcts.cp.BaseIntegrationTest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.MDC;
 
-@SpringBootTest
 @Slf4j
-public class SpringLoggingIntegrationTest {
+public class SpringLoggingIntegrationTest extends BaseIntegrationTest {
 
     private PrintStream originalStdOut = System.out;
 
@@ -35,8 +35,11 @@ public class SpringLoggingIntegrationTest {
         Map<String, Object> capturedFields = new ObjectMapper().readValue(capturedStdOut.toString(), new TypeReference<>() {
         });
 
+        System.out.println("============================");
+        System.out.println(capturedStdOut.toString());
+
         assertThat(capturedFields.get("any-mdc-field")).isEqualTo("1234-1234");
-        assertThat(capturedFields.get("timestamp")).isNotNull();
+        assertThat(capturedFields.get("@timestamp")).isNotNull();
         assertThat(capturedFields.get("logger_name")).isEqualTo("uk.gov.hmcts.cp.logging.SpringLoggingIntegrationTest");
         assertThat(capturedFields.get("thread_name")).isEqualTo("Test worker");
         assertThat(capturedFields.get("level")).isEqualTo("INFO");

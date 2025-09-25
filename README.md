@@ -23,6 +23,12 @@ That’s absolutely fine — but if you do, make sure your approach meets the fo
 
 Further documentation can be found in the [docs](docs) directory.
 
+### Key Documentation
+- [Spring Boot v4 Upgrade Guide](docs/SpringUpgradev4.md) - Details on the Spring Boot v4 upgrade, tracing test fixes, and code refactoring improvements
+- [JWT Filter Documentation](docs/JWTFilter.md) - JWT authentication filter configuration and usage
+- [Logging Documentation](docs/Logging.md) - Logging configuration and best practices
+- [Pipeline Documentation](docs/PIPELINE.md) - CI/CD pipeline configuration and deployment processes
+
 ## Installation
 
 To get started with this project, you'll need Java and Gradle installed.
