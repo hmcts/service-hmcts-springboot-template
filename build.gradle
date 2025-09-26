@@ -1,14 +1,18 @@
 plugins {
     id 'application'
     id 'java'
-    id 'io.spring.dependency-management' version '1.1.7'
     id 'org.springframework.boot' version '4.0.0-M3'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
+    id 'pmd'
     id 'maven-publish'
     id "com.github.ben-manes.versions" version "0.52.0"
     id "org.cyclonedx.bom" version "2.3.1"
     id "au.com.dius.pact" version "4.6.17"
-    id 'pmd'
+    // generating git.properties file for Spring Boot apps. Properties are exposed by telemetry
+    id 'com.gorylenko.gradle-git-properties' version '2.5.3'
+    // Docker Compose lifecycle for integration tests
+    id 'com.avast.gradle.docker-compose' version '0.17.12'
 }
 
 group = 'uk.gov.hmcts.cp'
@@ -47,7 +51,7 @@ sourceSets {
 
 configurations {
     integrationTestImplementation.extendsFrom testImplementation
-    integrationTestRuntimeOnly.extendsFrom runtimeOnly
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 
     pactVerificationTestImplementation.extendsFrom testImplementation
     pactVerificationTestRuntimeOnly.extendsFrom runtimeOnly
@@ -79,24 +83,6 @@ tasks.named('test') {
     jvmArgs += [
             "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}", '-Xshare:off'
     ]
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat = 'full'
-        showStandardStreams = true
-    }
-    reports {
-        junitXml.required.set(true)
-        html.required.set(true)
-    }
-}
-
-tasks.register('integration', Test) {
-    description = "Runs integration tests"
-    group = "Verification"
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    useJUnitPlatform()
-    failFast = true
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat = 'full'
@@ -151,13 +137,16 @@ tasks.named('check') {
     dependsOn tasks.named('integration')
 }
 
+tasks.named('build') { dependsOn tasks.named('integration') }
+
+
 pmd {
     ruleSets = []
     ruleSetFiles = files(".github/pmd-ruleset.xml")
     ignoreFailures = false
 }
 
-tasks.withType(Pmd) {
+tasks.withType(Pmd).configureEach {
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -263,21 +252,34 @@ tasks.named('processPactVerificationTestResources') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+springBoot {
+    buildInfo {
+        properties {
+            name = project.name
+            version = project.version.toString()
+        }
+    }
+}
+
 
 dependencies {
-    implementation "uk.gov.hmcts.cp:api-cp-crime-schedulingandlisting-courtschedule:$apiCourtScheduleVersion"
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-M1'
+    implementation("uk.gov.hmcts.cp:api-cp-crime-schedulingandlisting-courtschedule:$apiCourtScheduleVersion") {
+        exclude group: 'org.springdoc', module: 'springdoc-openapi-kotlin'
+    }
+    // Temporarily commented out due to SpringDoc compatibility issues with Spring Boot 4.0.0-M3
+    // implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0-M1') {
+    //     exclude group: 'org.springdoc', module: 'springdoc-openapi-kotlin'
+    // }
     implementation 'io.swagger.core.v3:swagger-core:2.2.36'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-aspectj'
 
-    implementation 'io.micrometer:micrometer-tracing'
-    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
-    implementation 'io.micrometer:micrometer-registry-azure-monitor'
-    implementation 'com.azure:azure-monitor-opentelemetry-autoconfigure:1.3.0'
+    // --- Observability / Actuator / OTEL / Prometheus ---
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
 
     implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
     implementation 'org.apache.logging.log4j:log4j-to-slf4j'
@@ -287,8 +289,6 @@ dependencies {
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.6'
     implementation 'org.hibernate.validator:hibernate-validator:9.0.1.Final'
     implementation 'org.apache.commons:commons-text:1.14.0'
-
-    // implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
 
     implementation 'io.jsonwebtoken:jjwt:0.13.0'
 
@@ -306,6 +306,8 @@ dependencies {
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    testImplementation 'io.micrometer:micrometer-tracing-test'
+
     testImplementation 'au.com.dius.pact.provider:junit5:4.6.17'
     testImplementation 'au.com.dius.pact.provider:spring6:4.6.17'
 
@@ -313,7 +315,6 @@ dependencies {
     // especially with platform BOMs, test runtime dependencies, or custom tasks. Explicit dependencies eliminate that risk.
     integrationTestImplementation platform('org.junit:junit-bom:5.13.4')
     integrationTestRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    integrationTestImplementation 'io.micrometer:micrometer-tracing-test'
 
     integrationTestImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'junit', module: 'junit'
@@ -323,4 +324,50 @@ dependencies {
     integrationTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
+}
+
+dockerCompose {
+    useComposeFiles = ['docker/docker-compose.integration.yml']
+    startedServices = ['db', 'app']
+
+    buildBeforeUp = true
+    waitForTcpPorts = true
+    upAdditionalArgs = ['--wait', '--wait-timeout', '120']
+
+    captureContainersOutput = true
+    removeOrphans = true
+    stopContainers = true
+    removeContainers = true
+
+    projectName = "${rootProject.name}-it".replaceAll('[^A-Za-z0-9]', '')
+
+    useDockerComposeV2 = true
+    dockerExecutable = 'docker'
+}
+
+tasks.register('integration', Test) {
+    description = "Runs integration tests against docker-compose stack"
+    group = "Verification"
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath       = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
+
+    dependsOn tasks.composeUp
+    finalizedBy tasks.composeDown
+
+    // TODO hardcoded port
+    systemProperty 'app.baseUrl', 'http://localhost:4550'
+
+    jvmArgs = ['-Xshare:off']
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'full'
+        showStandardStreams = true
+    }
+}
+
+tasks.named('processIntegrationTestResources') {
+    // prevent duplicate resource collisions (e.g., application-docker-it.yml)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

@@ -14,5 +14,5 @@
             </providers>
         </encoder>
     </appender>
-    <root level="INFO"><appender-ref ref="JSON"/></root>
+    <root level="DEBUG"><appender-ref ref="JSON"/></root>
 </configuration>
