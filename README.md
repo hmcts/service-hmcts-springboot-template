@@ -25,6 +25,7 @@ Further documentation can be found in the [docs](docs) directory.
 
 ### Key Documentation
 - [Spring Boot v4 Upgrade Guide](docs/SpringUpgradev4.md) - Details on the Spring Boot v4 upgrade, tracing test fixes, and code refactoring improvements
+- [Environment Variables Guide](docs/EnvironmentVariables.md) - Complete guide to managing environment variables with `.env` and `.envrc` files
 - [JWT Filter Documentation](docs/JWTFilter.md) - JWT authentication filter configuration and usage
 - [Logging Documentation](docs/Logging.md) - Logging configuration and best practices
 - [Pipeline Documentation](docs/PIPELINE.md) - CI/CD pipeline configuration and deployment processes
@@ -55,28 +56,20 @@ java -version
 
 ### Environment Setup for Local Builds
 
-Recommended Approach for macOS Users (using `direnv`)
+This project uses a two-file approach for environment variable management with `.env` and `.envrc` files. 
 
-If you're on macOS, you can use [direnv](https://direnv.net/) to automatically load these environment variables per project:
+**Quick Setup:**
+1. Install `direnv`: `brew install direnv`
+2. Add to shell: `echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc`
+3. Allow direnv: `direnv allow`
+4. Create `.env` file with your local configuration
 
-1. Install `direnv`:
-   ```bash
-   brew install direnv
-   ```
+**Server Port:** The application uses port `8082` by default. Override with:
+- Environment variable: `export SERVER_PORT=8080`
+- Gradle property: `./gradlew integration -Pserver.port=8080`
+- System property: `./gradlew integration -Dserver.port=8080`
 
-2. Hook it into your shell (example for bash or zsh):
-   ```bash
-   echo 'eval "$(direnv hook bash)"' >> ~/.bash_profile
-   # or for zsh
-   echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc
-   ```
-
-4. Allow `direnv` to load:
-   ```bash
-   direnv allow
-   ```
-
-This will ensure your environment is correctly set up every time you enter the project directory.
+📖 **For complete setup instructions, troubleshooting, and best practices, see the [Environment Variables Guide](docs/EnvironmentVariables.md).**
 
 ## Static code analysis
 
