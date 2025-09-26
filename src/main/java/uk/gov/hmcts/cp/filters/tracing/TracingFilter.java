@@ -28,6 +28,14 @@ public class TracingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
+        try {
+            populateMDC(request, response, filterChain);
+        } finally {
+            MDC.clear();
+        }
+    }
+
+    void populateMDC(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         MDC.put(APPLICATION_NAME, applicationName);
         if (request.getHeader(TRACE_ID) != null) {
             MDC.put(TRACE_ID, request.getHeader(TRACE_ID));
