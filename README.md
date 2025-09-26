@@ -29,32 +29,29 @@ Further documentation can be found in the [docs](docs) directory.
 - [Logging Documentation](docs/Logging.md) - Logging configuration and best practices
 - [Pipeline Documentation](docs/PIPELINE.md) - CI/CD pipeline configuration and deployment processes
 
-## Installation
-
-To get started with this project, you'll need Java and Gradle installed.
-
 ### Prerequisites
 
-- ☕️ **Java 21 or later**: Ensure Java is installed and available on your `PATH`.
-- ⚙️ **Gradle**: You can install Gradle using your preferred method:
-
-  **macOS (Recommended with Homebrew):**
-  ```bash
-  brew install gradle
-  ```
-
-  **Other Platforms:**
-  Visit the [Gradle installation guide](https://gradle.org/install/) for platform-specific instructions.
+- ☕️ **Java 21.0.8 or later**: Ensure Java is installed and available on your `PATH`.
+- ⚙️ **Gradle**: Gradle wrapper is provided with the project. The project itself defines which Gradle version to use (gradle-wrapper.properties).
+  Everyone builds with the exact same version which means no "works on my machine" issues.
 
 You can verify installation with:
 ```bash
 java -version
-gradle -v
+./gradlew -v
 ```
 
-#### Add Gradle Wrapper
+## Installation
 
-run `gradle wrapper`
+### Build
+```bash
+./gradlew build
+```
+
+### Tests
+- `./gradlew test` for running unit tests
+- `./gradlew integration` for running integration tests
+
 
 ### Environment Setup for Local Builds
 
@@ -112,7 +109,7 @@ export PACT_ENV="local" # or value based on the environment you are testing agai
 ```
 Run Pact tests:
 ```bash
-gradle pactVerificationTest
+./gradlew pactVerificationTest
 ```
 
 ### Contribute to This Repository
