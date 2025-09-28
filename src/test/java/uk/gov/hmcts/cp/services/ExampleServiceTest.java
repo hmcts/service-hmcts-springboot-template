@@ -3,16 +3,16 @@ package uk.gov.hmcts.cp.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.cp.openapi.model.CourtScheduleResponse;
-import uk.gov.hmcts.cp.repositories.CourtScheduleRepository;
-import uk.gov.hmcts.cp.repositories.InMemoryCourtScheduleRepositoryImpl;
+import uk.gov.hmcts.cp.repositories.ExampleRepository;
+import uk.gov.hmcts.cp.repositories.ExampleInMemoryStubRepositoryImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CourtScheduleServiceTest {
+class ExampleServiceTest {
 
-    private final CourtScheduleRepository courtScheduleRepository = new InMemoryCourtScheduleRepositoryImpl();
-    private final CourtScheduleService courtScheduleService = new CourtScheduleService(courtScheduleRepository);
+    private final ExampleRepository exampleRepository = new ExampleInMemoryStubRepositoryImpl();
+    private final ExampleService exampleService = new ExampleService(exampleRepository);
 
     @Test
     void shouldReturnStubbedCourtScheduleResponse_whenValidCaseUrnProvided() {
@@ -20,7 +20,7 @@ class CourtScheduleServiceTest {
         final String validCaseUrn = "123-ABC-456";
 
         // Act
-        final CourtScheduleResponse response = courtScheduleService.getCourtScheduleByCaseUrn(validCaseUrn);
+        final CourtScheduleResponse response = exampleService.getCourtScheduleByCaseUrn(validCaseUrn);
 
         // Assert
         assertThat(response).isNotNull();
@@ -37,7 +37,7 @@ class CourtScheduleServiceTest {
         final String nullCaseUrn = null;
 
         // Act & Assert
-        assertThatThrownBy(() -> courtScheduleService.getCourtScheduleByCaseUrn(nullCaseUrn))
+        assertThatThrownBy(() -> exampleService.getCourtScheduleByCaseUrn(nullCaseUrn))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("400 BAD_REQUEST")
                 .hasMessageContaining("caseUrn is required");
@@ -49,7 +49,7 @@ class CourtScheduleServiceTest {
         final String emptyCaseUrn = "";
 
         // Act & Assert
-        assertThatThrownBy(() -> courtScheduleService.getCourtScheduleByCaseUrn(emptyCaseUrn))
+        assertThatThrownBy(() -> exampleService.getCourtScheduleByCaseUrn(emptyCaseUrn))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("400 BAD_REQUEST")
                 .hasMessageContaining("caseUrn is required");
