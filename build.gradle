@@ -22,6 +22,8 @@ plugins {
 group = 'uk.gov.hmcts.cp'
 version = System.getProperty('ARTEFACT_VERSION') ?: '0.0.999'
 
+
+
 // Centralized port configuration
 ext {
     serverPort = project.findProperty('server.port') ?: '8082'
@@ -115,6 +117,12 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation 'ch.qos.logback:logback-core'
 
+    // --- Data / DB ---
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.6'
     implementation 'org.hibernate.validator:hibernate-validator:9.0.1.Final'
     implementation 'org.apache.commons:commons-text:1.14.0'
@@ -137,6 +145,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     testImplementation 'io.micrometer:micrometer-tracing-test'
+    testImplementation 'com.h2database:h2'
 
     testImplementation 'au.com.dius.pact.provider:junit5:4.6.17'
     testImplementation 'au.com.dius.pact.provider:spring6:4.6.17'
