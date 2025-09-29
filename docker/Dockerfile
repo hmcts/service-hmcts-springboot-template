@@ -11,11 +11,11 @@ WORKDIR /app
 # copy all jars (bootJar + plain). We'll run the non-plain jar.
 COPY build/libs/*.jar /app/
 
-EXPOSE 4550
+EXPOSE 8082
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:+AlwaysActAsServerClassMachine"
 
 HEALTHCHECK --interval=10s --timeout=3s --start-period=20s --retries=15 \
-  CMD curl -fsS http://localhost:4550/actuator/health | grep -q '"status":"UP"' || exit 1
+  CMD curl -fsS http://localhost:8082/actuator/health | grep -q '"status":"UP"' || exit 1
 
 USER app
 # pick the Boot fat jar (exclude '-plain.jar')

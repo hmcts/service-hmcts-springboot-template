@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @Slf4j
-class CourtScheduleControllerIntegrationTest extends BaseIntegrationTestSetup {
+class ExampleControllerIntegrationTest extends BaseIntegrationTestSetup {
     @Resource
     private MockMvc mockMvc;
 

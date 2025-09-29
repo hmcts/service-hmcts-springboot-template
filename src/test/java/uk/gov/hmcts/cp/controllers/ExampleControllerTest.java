@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.cp.openapi.model.*;
-import uk.gov.hmcts.cp.repositories.InMemoryCourtScheduleRepositoryImpl;
-import uk.gov.hmcts.cp.services.CourtScheduleService;
+import uk.gov.hmcts.cp.repositories.ExampleInMemoryStubRepositoryImpl;
+import uk.gov.hmcts.cp.services.ExampleService;
 
 import java.util.UUID;
 
@@ -16,21 +16,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-class CourtScheduleControllerTest {
+class ExampleControllerTest {
 
-    private CourtScheduleController courtScheduleController;
+    private ExampleController exampleController;
 
     @BeforeEach
     void setUp() {
-        final CourtScheduleService courtScheduleService = new CourtScheduleService(new InMemoryCourtScheduleRepositoryImpl());
-        courtScheduleController = new CourtScheduleController(courtScheduleService);
+        final ExampleService exampleService = new ExampleService(new ExampleInMemoryStubRepositoryImpl());
+        exampleController = new ExampleController(exampleService);
     }
 
     @Test
     void get_judge_by_id_should_return_judges_with_ok_status() {
         final UUID caseUrn = UUID.randomUUID();
         log.info("Calling courtScheduleController.getCourtScheduleByCaseUrn with caseUrn: {}", caseUrn);
-        final ResponseEntity<?> response = courtScheduleController.getCourtScheduleByCaseUrn(caseUrn.toString());
+        final ResponseEntity<?> response = exampleController.getCourtScheduleByCaseUrn(caseUrn.toString());
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -66,7 +66,7 @@ class CourtScheduleControllerTest {
         final String unsanitizedCaseUrn = "<script>alert('xss')</script>";
         log.info("Calling courtScheduleController.getCourtScheduleByCaseUrn with unsanitized caseUrn: {}", unsanitizedCaseUrn);
 
-        final ResponseEntity<?> response = courtScheduleController.getCourtScheduleByCaseUrn(unsanitizedCaseUrn);
+        final ResponseEntity<?> response = exampleController.getCourtScheduleByCaseUrn(unsanitizedCaseUrn);
         assertNotNull(response);
         log.debug("Received response: {}", response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -74,7 +74,7 @@ class CourtScheduleControllerTest {
 
     @Test
     void get_judge_by_id_should_return_bad_request_status() {
-        final ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> courtScheduleController.getCourtScheduleByCaseUrn(null));
+        final ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> exampleController.getCourtScheduleByCaseUrn(null));
         assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(exception.getReason()).isEqualTo("caseUrn is required");
         assertThat(exception.getMessage()).isEqualTo("400 BAD_REQUEST \"caseUrn is required\"");

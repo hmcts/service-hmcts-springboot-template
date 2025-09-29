@@ -19,7 +19,7 @@ import org.springframework.boot.web.server.test.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.cp.openapi.model.CourtScheduleResponse;
 import uk.gov.hmcts.cp.pact.helper.JsonFileToObject;
-import uk.gov.hmcts.cp.repositories.CourtScheduleRepository;
+import uk.gov.hmcts.cp.repositories.ExampleRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith({SpringExtension.class, PactVerificationInvocationContextProvider.class})
@@ -29,12 +29,12 @@ import uk.gov.hmcts.cp.repositories.CourtScheduleRepository;
         authentication = @PactBrokerAuth(token = "${pact.broker.token}")
 )
 @Tag("pact")
-class CourtScheduleProviderPactTest {
+class ExampleProviderPactTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CourtScheduleProviderPactTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleProviderPactTest.class);
 
     @Resource
-    private CourtScheduleRepository courtScheduleRepository;
+    private ExampleRepository exampleRepository;
 
     @LocalServerPort
     private int port;
@@ -48,9 +48,9 @@ class CourtScheduleProviderPactTest {
 
     @State("court schedule for case 456789 exists")
     public void setupCourtSchedule() throws Exception{
-        courtScheduleRepository.clearAll();
+        exampleRepository.clearAll();
         final CourtScheduleResponse courtScheduleResponse = JsonFileToObject.readJsonFromResources("courtSchedule.json", CourtScheduleResponse.class);
-        courtScheduleRepository.saveCourtSchedule("456789", courtScheduleResponse);
+        exampleRepository.saveCourtSchedule("456789", courtScheduleResponse);
     }
 
     @TestTemplate

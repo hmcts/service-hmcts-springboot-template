@@ -8,15 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.cp.openapi.model.CourtScheduleResponse;
-import uk.gov.hmcts.cp.repositories.CourtScheduleRepository;
+import uk.gov.hmcts.cp.repositories.ExampleRepository;
 
 @Service
 @RequiredArgsConstructor
-public class CourtScheduleService {
+public class ExampleService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CourtScheduleService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleService.class);
 
-    private final CourtScheduleRepository courtScheduleRepository;
+    private final ExampleRepository exampleRepository;
 
     public CourtScheduleResponse getCourtScheduleByCaseUrn(final String caseUrn) throws ResponseStatusException {
         if (StringUtils.isEmpty(caseUrn)) {
@@ -24,7 +24,7 @@ public class CourtScheduleService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "caseUrn is required");
         }
         LOG.atWarn().log("NOTE: System configured to return stubbed Court Schedule details. Ignoring provided caseUrn : {}", caseUrn);
-        final CourtScheduleResponse stubbedCourtScheduleResponse = courtScheduleRepository.getCourtScheduleByCaseUrn(caseUrn);
+        final CourtScheduleResponse stubbedCourtScheduleResponse = exampleRepository.getCourtScheduleByCaseUrn(caseUrn);
         LOG.atDebug().log("Court Schedule response: {}", stubbedCourtScheduleResponse);
         return stubbedCourtScheduleResponse;
     }
