@@ -33,25 +33,26 @@ Further documentation can be found in the [docs](docs) directory.
 ### Prerequisites
 
 - ☕️ **Java 21.0.8 or later**: Ensure Java is installed and available on your `PATH`.
-- ⚙️ **Gradle**: Gradle wrapper is provided with the project. The project itself defines which Gradle version to use (gradle-wrapper.properties).
-  Everyone builds with the exact same version which means no "works on my machine" issues.
+- ⚙️ **Gradle**: [Install Gradle](https://gradle.org/install/). The project itself defines which Gradle version to use (gradle/wraper/gradle-wrapper.properties).
 
 You can verify installation with:
 ```bash
 java -version
-./gradlew -v
+gradle -v
 ```
 
 ## Installation
 
 ### Build
 ```bash
-./gradlew build
+gradle build
 ```
 
+`build` will run all tests.
+
 ### Tests
-- `./gradlew test` for running unit tests
-- `./gradlew integration` for running integration tests
+- `gradle test` for running unit tests
+- `gradle integration` for running integration tests
 
 
 ### Environment Setup for Local Builds
@@ -85,6 +86,12 @@ pmd check \
     .github/pmd-ruleset.xml \
     --format html \
     -r build/reports/pmd/pmd-report.html
+```
+
+Run PMD from Gradle
+
+```
+gradle pmdTest
 ```
 
 ## Pact Provider Test
