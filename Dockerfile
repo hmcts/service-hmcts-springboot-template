@@ -12,7 +12,7 @@ ENV JAR_FULL_PATH=$JAR_FILE_PATH/$JAR_FILENAME
 
 # ---- Set runtime ENV for Spring Boot to bind port
 ARG SERVER_PORT
-ENV SERVER_PORT=${SERVER_PORT:-4550}
+ENV SERVER_PORT=${SERVER_PORT:-8082}
 
 # ---- Dependencies ----
 RUN apt-get update \
@@ -27,7 +27,7 @@ COPY lib/applicationinsights.json /opt/app/
 RUN chmod 755 /opt/app/app.jar
 
 # ---- Runtime ----
-EXPOSE 4550
+EXPOSE ${SERVER_PORT:-8082}
 
 # Documented runtime configuration
 # JWT secret for token verification (Base64-encoded HS256 key)

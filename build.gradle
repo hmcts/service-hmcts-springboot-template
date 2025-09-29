@@ -22,6 +22,11 @@ plugins {
 group = 'uk.gov.hmcts.cp'
 version = System.getProperty('ARTEFACT_VERSION') ?: '0.0.999'
 
+// Centralized port configuration
+ext {
+    serverPort = project.findProperty('server.port') ?: '8082'
+}
+
 def githubActor = project.findProperty("github.actor") ?: System.getenv("GITHUB_ACTOR")
 def githubToken = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
 def githubRepo = System.getenv("GITHUB_REPOSITORY")
@@ -325,7 +330,7 @@ tasks.register('integration', Test) {
     dependsOn tasks.composeUp
     finalizedBy tasks.composeDown
 
-    systemProperty 'app.baseUrl', 'http://localhost:8082'
+    systemProperty 'app.baseUrl', "http://localhost:${serverPort}"
 
     jvmArgs = ['-Xshare:off']
     testLogging {
