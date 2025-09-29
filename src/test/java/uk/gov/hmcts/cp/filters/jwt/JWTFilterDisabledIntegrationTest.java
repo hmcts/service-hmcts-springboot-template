@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import uk.gov.hmcts.cp.BaseIntegrationTestSetup;
+import uk.gov.hmcts.cp.NonTracingIntegrationTestSetup;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class JWTFilterDisabledIntegrationTest extends BaseIntegrationTestSetup {
+class JWTFilterDisabledIntegrationTest extends NonTracingIntegrationTestSetup {
 
     @Resource
     private MockMvc mockMvc;

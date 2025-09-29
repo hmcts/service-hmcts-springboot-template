@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
-import uk.gov.hmcts.cp.BaseIntegrationTestSetup;
+import uk.gov.hmcts.cp.NonTracingIntegrationTestSetup;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class SpringLoggingIntegrationTest extends BaseIntegrationTestSetup {
+class SpringLoggingIntegrationTest extends NonTracingIntegrationTestSetup {
 
     private final PrintStream originalStdOut = System.out;
 
