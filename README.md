@@ -1,4 +1,4 @@
-# HMCTS Service Spring Boot Template
+# HMCTS Crime Service Spring Boot Template
 
 This repository provides a template for building Spring Boot applications. While the initial use case was for the HMCTS API Marketplace, the template is designed to be reusable across jurisdictions and is intended as a base paved path for wider adoption.
 
